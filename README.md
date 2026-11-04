@@ -360,9 +360,7 @@ Students complete three exercises, individually first and then in pairs, and sub
 | `git restore <file>` | Discard uncommitted changes to a file |
 | `git push -u origin <branch>` | Push a new branch to GitHub the first time |
 
-## Video Tutorial
-
-<iframe width="100%" height="420" src="https://www.youtube.com/embed/ATVkjDNhQzU" title="GitHub Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![GitHub Video Tutorial](https://img.youtube.com/vi/ATVkjDNhQzU/maxresdefault.jpg)](https://www.youtube.com/watch?v=ATVkjDNhQzU)
 
 ### Common errors and fixes
 
