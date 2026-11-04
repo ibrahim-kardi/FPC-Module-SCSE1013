@@ -364,10 +364,6 @@ Students complete three exercises, individually first and then in pairs, and sub
 
 [![Watch the tutorial](https://markdown-videos-api.jorgenkh.no/youtube/ATVkjDNhQzU)](https://www.youtube.com/watch?v=ATVkjDNhQzU)
 
-### GitHub Video Tutorial
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ATVkjDNhQzU" title="GitHub Video Tutorial" frameborder="0" allowfullscreen></iframe>
-
 
 ### Common errors and fixes
 
