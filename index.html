@@ -1,26 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FPC Module: Getting Started with GitHub</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; padding: 0 16px; line-height: 1.6; }
-    .video { position: relative; padding-bottom: 56.25%; height: 0; }
-    .video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPC Module: Getting Started with GitHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #f4f7f6;
+    --surface: #ffffff;
+    --ink: #17212b;
+    --muted: #55626f;
+    --line: #d8e0de;
+    --branch: #1d7a57;
+    --branch-soft: #e1f1ea;
+    --code-bg: #142233;
+    --code-ink: #dbe6f0;
+    --code-dim: #7f93a8;
+    --code-green: #7fd6a8;
+    --warn: #b4441f;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0f1820;
+      --surface: #16222c;
+      --ink: #e3eaef;
+      --muted: #9aabb8;
+      --line: #2a3a46;
+      --branch: #4cc38a;
+      --branch-soft: #173a2c;
+      --code-bg: #0a121a;
+      --code-ink: #d6e2ec;
+      --code-dim: #6f8597;
+      --code-green: #7fd6a8;
+      --warn: #f08a62;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 17px/1.65 var(--body);
+  }
+  a { color: var(--branch); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+    outline: 3px solid var(--branch); outline-offset: 2px; border-radius: 4px;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 56px 24px 64px;
+  }
+  .hero-inner {
+    max-width: 1120px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center;
+  }
+  .course { color: var(--code-green); font-weight: 600; margin: 0 0 12px; }
+  .hero h1 {
+    font: 800 clamp(2.4rem, 5.5vw, 4.2rem)/1.02 var(--display);
+    letter-spacing: -0.02em; margin: 0 0 20px;
+  }
+  .hero p.lead { color: #b7c6d4; font-size: 1.1rem; max-width: 34em; margin: 0; }
+  .terminal {
+    background: #0b1520; border: 1px solid #243749; border-radius: 10px;
+    font: 14px/1.9 var(--mono); padding: 18px 20px; overflow-x: auto;
+  }
+  .terminal .prompt { color: var(--code-dim); margin-bottom: 6px; }
+  .terminal .prompt b { color: var(--code-green); font-weight: 400; }
+  .terminal a { display: flex; gap: 12px; color: var(--code-ink); text-decoration: none; white-space: nowrap; }
+  .terminal a:hover { color: #fff; }
+  .terminal a:hover .msg { text-decoration: underline; }
+  .terminal .graph { color: var(--code-green); }
+  .terminal .hash { color: #e8c170; }
+
+  /* Layout */
+  .layout {
+    max-width: 1120px; margin: 0 auto; padding: 48px 24px 96px;
+    display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px;
+  }
+  nav.toc { position: sticky; top: 24px; align-self: start; font-size: 0.92rem; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 2px solid var(--line); }
+  nav.toc li { position: relative; margin: 0 0 10px; }
+  nav.toc li::before {
+    content: ""; position: absolute; left: -25px; top: 0.5em;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--page); border: 2px solid var(--line);
+  }
+  nav.toc li.active::before { background: var(--branch); border-color: var(--branch); }
+  nav.toc a { color: var(--muted); text-decoration: none; }
+  nav.toc li.active a { color: var(--ink); font-weight: 600; }
+  .toc-mobile { display: none; }
+
+  main { max-width: 760px; }
+  section { margin-bottom: 72px; }
+  h2 {
+    font: 800 2rem/1.15 var(--display); letter-spacing: -0.01em;
+    margin: 0 0 20px; padding-top: 8px;
+  }
+  h3 { font: 600 1.3rem/1.3 var(--display); margin: 40px 0 12px; }
+  p, ul, ol { margin: 0 0 16px; }
+  li { margin-bottom: 6px; }
+  strong { font-weight: 600; }
+  .first { font-size: 1.08rem; }
+
+  code {
+    font: 0.88em var(--mono);
+    background: var(--branch-soft); color: var(--ink);
+    padding: 1px 6px; border-radius: 4px;
+  }
+  .codeblock { position: relative; margin: 0 0 20px; }
+  pre {
+    background: var(--code-bg); color: var(--code-ink);
+    margin: 0; padding: 18px 20px; border-radius: 8px;
+    overflow-x: auto; font: 14.5px/1.7 var(--mono);
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  pre .c { color: var(--code-dim); }
+  .copy {
+    position: absolute; top: 10px; right: 10px;
+    font: 600 12px var(--body); color: var(--code-ink);
+    background: #24384c; border: 0; border-radius: 6px; padding: 5px 10px; cursor: pointer;
+  }
+  .copy:hover { background: #2f4961; }
+
+  .table-wrap { overflow-x: auto; margin: 0 0 24px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; background: var(--branch-soft); }
+  tr:last-child td { border-bottom: 0; }
+
+  /* The basic cycle: a real sequence, so numbered steps */
+  .cycle { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; counter-reset: step; }
+  .cycle li {
+    counter-increment: step; background: var(--surface); border: 1px solid var(--line);
+    border-top: 4px solid var(--branch); border-radius: 6px; padding: 12px; margin: 0; font-size: 0.92rem;
+  }
+  .cycle li::before { content: counter(step); display: block; font: 800 1.4rem var(--display); color: var(--branch); }
+  .cycle li strong { display: block; }
+
+  .note {
+    border-left: 4px solid var(--branch); background: var(--surface);
+    padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 0 0 20px;
+  }
+
+  .video { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 10px; overflow: hidden; background: #000; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  ul.checklist { list-style: none; padding: 0; }
+  ul.checklist label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  ul.checklist input { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--branch); flex: none; }
+
+  footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; padding: 24px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .layout { grid-template-columns: 1fr; gap: 0; padding-top: 24px; }
+    nav.toc { display: none; }
+    .toc-mobile { display: block; margin-bottom: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+    .toc-mobile summary { font-weight: 600; cursor: pointer; }
+    .toc-mobile ol { margin: 12px 0 4px; }
+    .cycle { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .hero { padding: 40px 18px 44px; }
+    .layout { padding-left: 18px; padding-right: 18px; }
+    .cycle { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <h1>FPC Module: Getting Started with GitHub</h1>
 
-  <h2>GitHub Video Tutorial</h2>
-  <div class="video">
-    <iframe src="https://www.youtube.com/embed/ATVkjDNhQzU"
-      title="GitHub Video Tutorial"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen></iframe>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="course">SCSE1013 Fundamental Programming Concept</p>
+      <h1>Getting Started with GitHub</h1>
+      <p class="lead">Store your code online, track every change with Git, and submit your work through a repository. No prior Git experience needed.</p>
+    </div>
+    <div class="terminal" role="navigation" aria-label="Module contents">
+      <div class="prompt"><b>$</b> git log --oneline</div>
+      <a href="#what-is-github"><span class="graph">*</span><span class="hash">a1c9e02</span><span class="msg">What is GitHub?</span></a>
+      <a href="#part-1"><span class="graph">*</span><span class="hash">3f7b1d4</span><span class="msg">Part 1: Concepts</span></a>
+      <a href="#part-2"><span class="graph">*</span><span class="hash">8e02c5a</span><span class="msg">Part 2: Setup</span></a>
+      <a href="#part-3"><span class="graph">*</span><span class="hash">c4d6f91</span><span class="msg">Part 3: Your first repository</span></a>
+      <a href="#part-4"><span class="graph">*</span><span class="hash">5b91a7e</span><span class="msg">Part 4: Branches and pull requests</span></a>
+      <a href="#part-5"><span class="graph">*</span><span class="hash">e07d3b8</span><span class="msg">Part 5: Lab exercises</span></a>
+      <a href="#video"><span class="graph">*</span><span class="hash">92fa60c</span><span class="msg">Video tutorial</span></a>
+      <a href="#reference"><span class="graph">*</span><span class="hash">d18e4f3</span><span class="msg">Quick reference</span></a>
+    </div>
   </div>
+</header>
 
-  <p><a href="https://github.com/ibrahim-kardi/FPC-Module-SCSE1013/blob/main/README.md">Read the full module notes</a></p>
+<div class="layout">
+  <nav class="toc" aria-label="Sections">
+    <ol>
+      <li><a href="#what-is-github">What is GitHub?</a></li>
+      <li><a href="#overview">Module overview</a></li>
+      <li><a href="#part-1">Part 1: Concepts</a></li>
+      <li><a href="#part-2">Part 2: Setup</a></li>
+      <li><a href="#part-3">Part 3: First repository</a></li>
+      <li><a href="#part-4">Part 4: Branches and PRs</a></li>
+      <li><a href="#part-5">Part 5: Lab exercises</a></li>
+      <li><a href="#video">Video tutorial</a></li>
+      <li><a href="#reference">Quick reference</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <details class="toc-mobile">
+      <summary>Jump to a section</summary>
+      <ol>
+        <li><a href="#what-is-github">What is GitHub?</a></li>
+        <li><a href="#overview">Module overview</a></li>
+        <li><a href="#part-1">Part 1: Concepts</a></li>
+        <li><a href="#part-2">Part 2: Setup</a></li>
+        <li><a href="#part-3">Part 3: First repository</a></li>
+        <li><a href="#part-4">Part 4: Branches and PRs</a></li>
+        <li><a href="#part-5">Part 5: Lab exercises</a></li>
+        <li><a href="#video">Video tutorial</a></li>
+        <li><a href="#reference">Quick reference</a></li>
+      </ol>
+    </details>
+
+    <!-- What is GitHub -->
+    <section id="what-is-github">
+      <h2>What is GitHub?</h2>
+      <p class="first">GitHub is an online platform for storing, sharing and working together on code. It is built on Git, a version control system that records every change made to a project, so you can see who changed what and go back to any earlier version. More than 100 million developers use it, from students to companies such as Microsoft and Google.</p>
+      <p><strong>What GitHub is used for:</strong></p>
+      <ul>
+        <li><strong>Backup and access anywhere.</strong> Your code is stored online, so it is safe if your laptop breaks and you can work on it from any computer.</li>
+        <li><strong>Version history.</strong> Every change is recorded, so mistakes can be undone and progress can be tracked.</li>
+        <li><strong>Collaboration.</strong> Several people can work on the same project at the same time without overwriting each other's work.</li>
+        <li><strong>Code review.</strong> Teammates can comment on and approve changes before they are merged, through pull requests.</li>
+        <li><strong>Assignment submission.</strong> Lecturers can receive and check work through a repository link and see its full history.</li>
+        <li><strong>Portfolio.</strong> Your public repositories show employers what you can build, like an online CV for programmers.</li>
+        <li><strong>Open source.</strong> Anyone can explore, learn from and contribute to millions of public projects.</li>
+      </ul>
+    </section>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2>Module overview</h2>
+      <p class="first">By the end of this module, every FPC student can store their code on GitHub, track changes with Git, and submit work through a repository. No prior Git experience is assumed.</p>
+      <p><strong>Learning outcomes.</strong> After completing this module, students will be able to:</p>
+      <ol>
+        <li>Explain the difference between Git and GitHub, and the purpose of version control.</li>
+        <li>Set up a GitHub account and install and configure Git on their own computer.</li>
+        <li>Create, clone and update a repository using the core commands: <code>clone</code>, <code>add</code>, <code>commit</code>, <code>push</code>, <code>pull</code>.</li>
+        <li>Use branches and pull requests to work safely and collaborate in a group.</li>
+        <li>Resolve a simple merge conflict.</li>
+      </ol>
+      <p><strong>Prerequisites.</strong> A laptop (Windows, macOS or Linux), an internet connection, and a student email address. Basic familiarity with opening a terminal or command prompt helps but is not required.</p>
+    </section>
+
+    <!-- Part 1 -->
+    <section id="part-1">
+      <h2>Part 1: Concepts</h2>
+      <p class="first">Git is a tool on your computer that records snapshots of your code; GitHub is a website that stores those snapshots online so you can back them up, share them and collaborate.</p>
+      <p><strong>Why version control?</strong> Without it, students end up with folders like <code>assignment_final</code>, <code>assignment_final2</code> and <code>assignment_REALLY_final</code>. With Git, every saved version is kept in one folder with a message explaining what changed, and you can go back to any earlier version.</p>
+      <div class="note"><strong>Analogy.</strong> Think of Git as a save system in a video game: each commit is a save point. GitHub is the cloud save, so your progress survives even if your laptop does not.</div>
+
+      <h3>Key terms</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Repository (repo)</td><td>A project folder tracked by Git, including its full history</td><td><code>fpc-lab1</code></td></tr>
+          <tr><td>Commit</td><td>A saved snapshot of changes, with a message</td><td>"Add input validation to calculator"</td></tr>
+          <tr><td>Staging area</td><td>The list of changes you have chosen to include in the next commit</td><td>Files added with <code>git add</code></td></tr>
+          <tr><td>Local repo</td><td>The copy on your computer</td><td><code>C:\Users\ali\fpc-lab1</code></td></tr>
+          <tr><td>Remote repo</td><td>The copy on GitHub, usually named <code>origin</code></td><td><code>github.com/ali/fpc-lab1</code></td></tr>
+          <tr><td>Clone</td><td>Download a remote repo to your computer for the first time</td><td><code>git clone &lt;url&gt;</code></td></tr>
+          <tr><td>Push</td><td>Upload your local commits to GitHub</td><td><code>git push</code></td></tr>
+          <tr><td>Pull</td><td>Download new commits from GitHub to your computer</td><td><code>git pull</code></td></tr>
+          <tr><td>Branch</td><td>A separate line of work, so changes do not affect the main code until ready</td><td><code>feature-login</code></td></tr>
+          <tr><td>Merge</td><td>Combine the changes from one branch into another</td><td>Merge <code>feature-login</code> into <code>main</code></td></tr>
+          <tr><td>Pull request (PR)</td><td>A request on GitHub to review and merge a branch</td><td>"Add login menu" PR</td></tr>
+          <tr><td>Merge conflict</td><td>Git cannot combine two changes to the same lines automatically</td><td>Two members edited line 12</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The basic cycle</h3>
+      <p>Students will repeat these steps for every piece of work:</p>
+      <ol class="cycle">
+        <li><strong>Edit</strong> files in your code editor.</li>
+        <li><strong>Stage</strong> the changes you want to save: <code>git add</code></li>
+        <li><strong>Commit</strong> with a clear message: <code>git commit -m "..."</code></li>
+        <li><strong>Push</strong> to GitHub: <code>git push</code></li>
+        <li><strong>Pull</strong> the latest changes before you start next time: <code>git pull</code></li>
+      </ol>
+    </section>
+
+    <!-- Part 2 -->
+    <section id="part-2">
+      <h2>Part 2: Setup</h2>
+      <p class="first">Setup is done once per computer; students should finish it before the first hands-on lab.</p>
+
+      <h3>Step 1: Create a GitHub account</h3>
+      <ol>
+        <li>Go to <a href="https://github.com">github.com</a> and click <strong>Sign up</strong>.</li>
+        <li>Use your student email so you can apply for student benefits later.</li>
+        <li>Choose a professional username (for example <code>aliahmad-dev</code>, not <code>xX_gamer_Xx</code>). Recruiters may see it.</li>
+        <li>Verify your email address.</li>
+        <li>Turn on two-factor authentication under <strong>Settings → Password and authentication</strong>. GitHub requires it for most accounts that contribute code.</li>
+      </ol>
+      <div class="note"><strong>Optional: GitHub Student Developer Pack.</strong> Apply at <a href="https://education.github.com">education.github.com</a> with your student email and proof of enrolment to get GitHub Pro and free developer tools while you study.</div>
+
+      <h3>Step 2: Install Git</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>OS</th><th>How to install</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Windows</td><td>Download from <a href="https://git-scm.com/downloads">git-scm.com</a> and run the installer</td><td>Default options are fine. Installs <strong>Git Bash</strong> and Git Credential Manager.</td></tr>
+          <tr><td>macOS</td><td>Run <code>git --version</code> in Terminal; accept the prompt to install Command Line Tools</td><td>Or install with Homebrew: <code>brew install git</code></td></tr>
+          <tr><td>Linux (Ubuntu/Debian)</td><td><code>sudo apt update &amp;&amp; sudo apt install git</code></td><td>Use your distro's package manager otherwise</td></tr>
+        </tbody>
+      </table></div>
+      <p>Check it worked by opening a terminal (Git Bash on Windows) and running:</p>
+      <pre><code>git --version</code></pre>
+      <p>Any version number in the output means Git is installed.</p>
+
+      <h3>Step 3: Tell Git who you are</h3>
+      <p>Git stamps every commit with your name and email. Use the <strong>same email as your GitHub account</strong> so commits link to your profile.</p>
+      <pre><code>git config --global user.name "Your Name"
+git config --global user.email "Your Email"
+git config --global init.defaultBranch main
+git config --list</code></pre>
+      <p>The last command shows your settings so you can confirm them.</p>
+
+      <h3>Step 4: Connect your computer to GitHub (authentication)</h3>
+      <p>GitHub no longer accepts your account password for <code>git push</code>. Pick one of these methods.</p>
+      <p><strong>Option A, browser sign-in (recommended for beginners).</strong> On Windows, Git Credential Manager pops up a browser login on your first push; sign in once and it is remembered. On any OS, you can instead install <a href="https://cli.github.com">GitHub CLI</a> and run <code>gh auth login</code>, then follow the prompts (choose GitHub.com, HTTPS, and log in with a web browser).</p>
+      <p><strong>Option B, SSH key.</strong> Generate a key and add the public half to GitHub:</p>
+      <pre><code>ssh-keygen -t ed25519 -C "Your Email"
+cat ~/.ssh/id_ed25519.pub</code></pre>
+      <p>Copy the printed line into <strong>GitHub → Settings → SSH and GPG keys → New SSH key</strong>, then test with <code>ssh -T git@github.com</code>. When cloning, use the SSH URL (<code>git@github.com:...</code>) instead of the HTTPS one.</p>
+
+      <h3>Step 5 (optional): Friendlier tools</h3>
+      <ul>
+        <li><strong>VS Code</strong> has Git built in: the Source Control panel lets you stage, commit and push with buttons. Students should still learn the commands first.</li>
+        <li><strong>GitHub Desktop</strong> (<a href="https://desktop.github.com">desktop.github.com</a>) is a graphical app that suits students who struggle with the terminal.</li>
+      </ul>
+      <div class="note"><strong>Setup checkpoint:</strong> <code>git --version</code> works, <code>git config --list</code> shows your name and email, and you can sign in to GitHub from your computer.</div>
+    </section>
+
+    <!-- Part 3 -->
+    <section id="part-3">
+      <h2>Part 3: Your first repository</h2>
+      <p class="first">In this guided lab, each student creates a repo on GitHub, clones it, adds a program, and pushes it back, completing the full basic cycle once.</p>
+
+      <h3>3.1 Create a repository on GitHub</h3>
+      <ol>
+        <li>Click <strong>+ → New repository</strong> (top right of GitHub).</li>
+        <li>Name it <code>fpc-lab1</code>.</li>
+        <li>Set visibility to <strong>Private</strong> for graded work, unless your lecturer says otherwise.</li>
+        <li>Tick <strong>Add a README file</strong>.</li>
+        <li>Under <strong>Add .gitignore</strong>, pick the template for your course language (for example <strong>C</strong> or <strong>Python</strong>).</li>
+        <li>Click <strong>Create repository</strong>.</li>
+      </ol>
+
+      <h3>3.2 Clone it to your computer</h3>
+      <p>On the repo page, click the green <strong>Code</strong> button and copy the HTTPS URL (or SSH URL if you set up SSH). Then:</p>
+      <pre><code>cd Documents
+git clone https://github.com/&lt;your-username&gt;/fpc-lab1.git
+cd fpc-lab1
+ls</code></pre>
+      <p>You should see <code>README.md</code>. This folder is now a local repo linked to GitHub.</p>
+
+      <h3>3.3 Add a file and check status</h3>
+      <p>Create a small program in the folder, for example <code>hello.c</code> (or <code>hello.py</code>), using your editor. Then ask Git what changed:</p>
+      <pre><code>git status</code></pre>
+      <p>Git lists <code>hello.c</code> as <strong>untracked</strong>: it sees the file but is not saving it yet.</p>
+
+      <h3>3.4 Stage and commit</h3>
+      <pre><code>git add hello.c
+git status
+git commit -m "Add hello world program"</code></pre>
+      <p>After <code>git add</code>, the file shows under <strong>Changes to be committed</strong>. After <code>git commit</code>, the snapshot is saved locally. Use <code>git add .</code> to stage every changed file in the folder.</p>
+      <p><strong>Writing good commit messages.</strong> Describe what the change does, in a short imperative phrase.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Good</th><th>Bad</th></tr></thead>
+        <tbody>
+          <tr><td>Add menu loop to calculator</td><td>update</td></tr>
+          <tr><td>Fix division by zero in average function</td><td>asdf</td></tr>
+          <tr><td>Rename variables for readability</td><td>final version!!!</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>3.5 Push to GitHub</h3>
+      <pre><code>git push</code></pre>
+      <p>The first push may open a browser sign-in (Part 2, Step 4). Refresh the repo page on GitHub: <code>hello.c</code> and your commit message now appear.</p>
+
+      <h3>3.6 Edit the README on GitHub, then pull</h3>
+      <p>This simulates a change made somewhere else (another computer or a teammate).</p>
+      <ol>
+        <li>On GitHub, open <code>README.md</code>, click the pencil icon, add a line such as your name and matric number, and click <strong>Commit changes</strong>.</li>
+        <li>On your computer, run:</li>
+      </ol>
+      <pre><code>git pull</code></pre>
+      <p>Open <code>README.md</code> locally: the new line is there.</p>
+      <div class="note"><strong>Habit to build:</strong> always <code>git pull</code> before you start working.</div>
+
+      <h3>3.7 View history</h3>
+      <pre><code>git log --oneline</code></pre>
+      <p>Each line is one commit, newest first. On GitHub, click <strong>Commits</strong> on the repo page to see the same history.</p>
+
+      <h3>3.8 What .gitignore is for</h3>
+      <p>The <code>.gitignore</code> file lists files Git should never track, such as compiled programs and editor settings. A typical entry list for a C course:</p>
+      <pre><code>*.exe
+*.o
+a.out
+.vscode/</code></pre>
+      <p>Commit source code, not the files your compiler produces.</p>
+    </section>
+
+    <!-- Part 4 -->
+    <section id="part-4">
+      <h2>Part 4: Branches, pull requests and collaboration</h2>
+      <p class="first">Group members should never all edit <code>main</code> directly; each person works on their own branch and merges through a pull request, which keeps <code>main</code> working and shows who did what.</p>
+
+      <h3>4.1 Create and switch branches</h3>
+      <pre><code>git switch -c feature-menu      <span class="c"># create a new branch and move to it</span>
+git branch                      <span class="c"># list branches; * marks the current one</span>
+git switch main                 <span class="c"># go back to main</span></code></pre>
+      <p>Commits made on <code>feature-menu</code> do not touch <code>main</code> until you merge them.</p>
+
+      <h3>4.2 Push a branch and open a pull request</h3>
+      <pre><code>git switch feature-menu
+<span class="c"># edit files...</span>
+git add .
+git commit -m "Add main menu with three options"
+git push -u origin feature-menu</code></pre>
+      <p>The <code>-u</code> links your local branch to GitHub, so later you can just type <code>git push</code>. Then on GitHub:</p>
+      <ol>
+        <li>Click <strong>Compare &amp; pull request</strong> (it appears after the push), or go to <strong>Pull requests → New pull request</strong>.</li>
+        <li>Set <strong>base</strong> to <code>main</code> and <strong>compare</strong> to <code>feature-menu</code>.</li>
+        <li>Write a title and a short description of what changed and how to test it.</li>
+        <li>Add a teammate as <strong>Reviewer</strong>.</li>
+        <li>After review, click <strong>Merge pull request</strong>, then <strong>Delete branch</strong>.</li>
+        <li>Locally, update <code>main</code>: <code>git switch main</code> then <code>git pull</code>.</li>
+      </ol>
+
+      <h3>4.3 Group assignment workflow</h3>
+      <ol>
+        <li><strong>One member</strong> creates the repo and adds the others under <strong>Settings → Collaborators</strong>.</li>
+        <li><strong>Each member</strong> clones the repo.</li>
+        <li>Before each task: <code>git switch main</code> and <code>git pull</code>.</li>
+        <li>Create a branch named after the task: <code>git switch -c &lt;name&gt;-&lt;task&gt;</code>, for example <code>siti-file-io</code>.</li>
+        <li>Commit small, logical changes often.</li>
+        <li>Push the branch and open a pull request.</li>
+        <li>Another member reviews and merges it.</li>
+        <li>Everyone pulls <code>main</code> again before the next task.</li>
+      </ol>
+      <div class="note"><strong>Tip:</strong> agree on who owns which files or functions. Fewer people editing the same lines means fewer conflicts.</div>
+
+      <h3>4.4 Resolving a merge conflict</h3>
+      <p>A conflict happens when two branches change the <strong>same lines</strong> of the same file. Git stops and marks the file like this:</p>
+      <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+printf("Welcome to the calculator\n");
+=======
+printf("Welcome to FPC Calculator v2\n");
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-menu</code></pre>
+      <p>The part above <code>=======</code> is your current branch; the part below is the incoming branch. To fix it:</p>
+      <ol>
+        <li>Open the file and decide what the final code should be (keep one side, the other, or combine them).</li>
+        <li>Delete the markers <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
+        <li>Save, then mark it resolved and commit:</li>
+      </ol>
+      <pre><code>git add main.c
+git commit -m "Resolve conflict in welcome message"
+git push</code></pre>
+      <p>VS Code highlights conflicts and offers <strong>Accept Current / Accept Incoming / Accept Both</strong> buttons, which helps beginners. GitHub can also resolve simple conflicts in the browser from the pull request page.</p>
+    </section>
+
+    <!-- Part 5 -->
+    <section id="part-5">
+      <h2>Part 5: Lab exercises</h2>
+      <p class="first">Students complete three exercises, individually first and then in pairs, and submit their repository links for checking.</p>
+
+      <h3>Exercise 1: Personal repo (individual)</h3>
+      <ol>
+        <li>Create a private repo named <code>fpc-&lt;matric-number&gt;</code> with a README and a <code>.gitignore</code>.</li>
+        <li>Clone it, add a working program from a previous FPC lab, and push it.</li>
+        <li>Edit the README to include your name, matric number and a one-line description of the program.</li>
+        <li>Make <strong>at least three commits</strong> with meaningful messages.</li>
+      </ol>
+
+      <h3>Exercise 2: Branch and pull request (individual)</h3>
+      <ol>
+        <li>Create a branch <code>improve-input</code>.</li>
+        <li>Add input validation to your program (for example, reject negative numbers).</li>
+        <li>Push the branch, open a pull request into <code>main</code>, and merge it yourself.</li>
+        <li>Pull <code>main</code> locally and confirm the change is there.</li>
+      </ol>
+
+      <h3>Exercise 3: Pair collaboration and conflict (pairs)</h3>
+      <ol>
+        <li>Student A creates repo <code>fpc-pair-&lt;A&gt;-&lt;B&gt;</code> and adds Student B as a collaborator.</li>
+        <li>Both clone it. Each creates their own branch and edits <strong>the same line</strong> of <code>README.md</code>.</li>
+        <li>A opens a PR and merges it. B opens a PR, which now has a conflict.</li>
+        <li>B resolves the conflict (in VS Code or on GitHub) and merges.</li>
+      </ol>
+
+      <h3>Submission checklist</h3>
+      <p>Tick each item as you finish it. Your ticks are saved in this browser.</p>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-key="c1"> Repo link submitted via the course LMS</label></li>
+        <li><label><input type="checkbox" data-key="c2"> README has name, matric number and program description</label></li>
+        <li><label><input type="checkbox" data-key="c3"> At least 3 commits with meaningful messages</label></li>
+        <li><label><input type="checkbox" data-key="c4"> One merged pull request from <code>improve-input</code></label></li>
+        <li><label><input type="checkbox" data-key="c5"> No compiled files (<code>.exe</code>, <code>.o</code>, <code>a.out</code>) committed</label></li>
+        <li><label><input type="checkbox" data-key="c6"> Pair repo shows a resolved merge conflict in its history</label></li>
+      </ul>
+
+      <h3>Suggested marking rubric (10 marks)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th>Marks</th></tr></thead>
+        <tbody>
+          <tr><td>Repo set up correctly (README, .gitignore, private)</td><td>2</td></tr>
+          <tr><td>Commit history: at least 3 commits, clear messages</td><td>3</td></tr>
+          <tr><td>Branch and pull request merged correctly</td><td>2</td></tr>
+          <tr><td>Merge conflict resolved, code still runs</td><td>2</td></tr>
+          <tr><td>No unnecessary files committed</td><td>1</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- Video -->
+    <section id="video">
+      <h2>GitHub video tutorial</h2>
+      <p class="first">Watch this walkthrough before or after the labs to see each step in action.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/ATVkjDNhQzU"
+          title="GitHub video tutorial"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- Quick reference -->
+    <section id="reference">
+      <h2>Quick reference</h2>
+
+      <h3>Command cheat sheet</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>git clone &lt;url&gt;</code></td><td>Download a repo from GitHub</td></tr>
+          <tr><td><code>git status</code></td><td>Show changed, staged and untracked files</td></tr>
+          <tr><td><code>git add &lt;file&gt;</code> / <code>git add .</code></td><td>Stage one file / all changes</td></tr>
+          <tr><td><code>git commit -m "msg"</code></td><td>Save staged changes as a commit</td></tr>
+          <tr><td><code>git push</code></td><td>Upload commits to GitHub</td></tr>
+          <tr><td><code>git pull</code></td><td>Download and merge new commits from GitHub</td></tr>
+          <tr><td><code>git log --oneline</code></td><td>Show commit history, one line each</td></tr>
+          <tr><td><code>git diff</code></td><td>Show unstaged changes line by line</td></tr>
+          <tr><td><code>git switch -c &lt;branch&gt;</code></td><td>Create a branch and switch to it</td></tr>
+          <tr><td><code>git switch &lt;branch&gt;</code></td><td>Switch to an existing branch</td></tr>
+          <tr><td><code>git branch</code></td><td>List local branches</td></tr>
+          <tr><td><code>git restore &lt;file&gt;</code></td><td>Discard uncommitted changes to a file</td></tr>
+          <tr><td><code>git push -u origin &lt;branch&gt;</code></td><td>Push a new branch to GitHub the first time</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Common errors and fixes</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Error message (shortened)</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td><code>fatal: not a git repository</code></td><td>You are in the wrong folder</td><td><code>cd</code> into the repo folder (it contains a hidden <code>.git</code> folder)</td></tr>
+          <tr><td><code>Author identity unknown</code></td><td>Name and email not configured</td><td>Run the <code>git config --global</code> commands in Part 2, Step 3</td></tr>
+          <tr><td><code>Support for password authentication was removed</code></td><td>Used GitHub password to push</td><td>Use browser sign-in, <code>gh auth login</code>, or SSH (Part 2, Step 4)</td></tr>
+          <tr><td><code>! [rejected] ... (fetch first)</code></td><td>GitHub has commits you do not have</td><td><code>git pull</code>, resolve any conflict, then <code>git push</code></td></tr>
+          <tr><td><code>CONFLICT (content): Merge conflict in ...</code></td><td>Same lines changed on two branches</td><td>Follow Part 4.4</td></tr>
+          <tr><td><code>Permission denied (publickey)</code></td><td>SSH key not added to GitHub</td><td>Add the public key in Settings, or clone with HTTPS instead</td></tr>
+          <tr><td><code>src refspec main does not match any</code></td><td>No commits yet, or branch is named <code>master</code></td><td>Commit first; check the name with <code>git branch</code></td></tr>
+          <tr><td>Editor opens with strange text after <code>git commit</code></td><td>Forgot <code>-m</code></td><td>Type a message, save and close; or in Vim press <code>Esc</code>, type <code>:wq</code>, press Enter</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Good practices</h3>
+      <ul>
+        <li>Pull before you start; push when you finish a session.</li>
+        <li>Commit small, working changes with clear messages.</li>
+        <li>Never commit passwords, API keys or personal data. Once pushed, assume it is public.</li>
+        <li>Keep graded work in <strong>private</strong> repos to avoid plagiarism issues.</li>
+        <li>Use branches and pull requests for group work; keep <code>main</code> runnable.</li>
+      </ul>
+
+      <h3>References</h3>
+      <ul>
+        <li><a href="https://docs.github.com/en/get-started">GitHub Docs: Get started</a></li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<footer>SCSE1013 Fundamental Programming Concept. <a href="https://github.com/ibrahim-kardi/FPC-Module-SCSE1013">View this module on GitHub</a></footer>
+
+<script>
+  // Copy buttons on every code block
+  document.querySelectorAll('main pre').forEach(function (pre) {
+    var wrap = document.createElement('div');
+    wrap.className = 'codeblock';
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+    var btn = document.createElement('button');
+    btn.className = 'copy';
+    btn.type = 'button';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function () {
+      var text = pre.innerText.split('\n').map(function (line) {
+        return line.replace(/\s+#.*$/, '').replace(/^#.*$/, '');
+      }).filter(function (line) { return line.trim() !== ''; }).join('\n');
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+      }, function () { btn.textContent = 'Press Ctrl+C'; });
+    });
+    wrap.appendChild(btn);
+  });
+
+  // Checklist ticks remembered in this browser
+  document.querySelectorAll('.checklist input').forEach(function (box) {
+    var key = 'fpc-check-' + box.dataset.key;
+    try { box.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+    box.addEventListener('change', function () {
+      try { localStorage.setItem(key, box.checked ? '1' : '0'); } catch (e) {}
+    });
+  });
+
+  // Highlight the current section in the side menu
+  var links = {};
+  document.querySelectorAll('nav.toc a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a.parentNode; });
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting && links[entry.target.id]) {
+        Object.values(links).forEach(function (li) { li.classList.remove('active'); });
+        links[entry.target.id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('main section').forEach(function (s) { observer.observe(s); });
+</script>
 </body>
 </html>
