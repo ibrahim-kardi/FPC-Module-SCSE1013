@@ -382,9 +382,5 @@ Students complete three exercises, individually first and then in pairs, and sub
 - Use branches and pull requests for group work; keep `main` runnable.
 
 ### References
-
-- [Pro Git book (free)](https://git-scm.com/book/en/v2)
 - [GitHub Docs: Get started](https://docs.github.com/en/get-started)
-- [GitHub Skills (interactive courses)](https://skills.github.com)
-- [GitHub Education](https://education.github.com)
-- [Learn Git Branching (visual practice)](https://learngitbranching.js.org)
+
