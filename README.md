@@ -99,8 +99,8 @@ Any version number in the output means Git is installed.
 Git stamps every commit with your name and email. Use the **same email as your GitHub account** so commits link to your profile.
 
 ```bash
-git config --global user.name "Ali Ahmad"
-git config --global user.email "ali.ahmad@student.example.edu"
+git config --global user.name "Your Name"
+git config --global user.email "Your Email"
 git config --global init.defaultBranch main
 git config --list
 ```
@@ -115,7 +115,7 @@ GitHub no longer accepts your account password for `git push`. Pick one of these
 - **Option B, SSH key.** Generate a key and add the public half to GitHub:
 
 ```bash
-ssh-keygen -t ed25519 -C "ali.ahmad@student.example.edu"
+ssh-keygen -t ed25519 -C "Your Eamil"
 cat ~/.ssh/id_ed25519.pub
 ```
 
