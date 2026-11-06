@@ -199,7 +199,7 @@
       <a href="#part-3"><span class="graph">*</span><span class="hash">c4d6f91</span><span class="msg">Part 3: Your first repository</span></a>
       <a href="#part-4"><span class="graph">*</span><span class="hash">5b91a7e</span><span class="msg">Part 4: Branches and pull requests</span></a>
       <a href="#part-5"><span class="graph">*</span><span class="hash">e07d3b8</span><span class="msg">Part 5: Using GitHub in VS Code</span></a>
-      <a href="#part-6"><span class="graph">*</span><span class="hash">6ac2f15</span><span class="msg">Part 6: Lab exercises</span></a>
+      <a href="#part-6"><span class="graph">*</span><span class="hash">6ac2f15</span><span class="msg">Part 6: Explore on your own</span></a>
       <a href="#video"><span class="graph">*</span><span class="hash">92fa60c</span><span class="msg">Video tutorial</span></a>
       <a href="#reference"><span class="graph">*</span><span class="hash">d18e4f3</span><span class="msg">Quick reference</span></a>
     </div>
@@ -216,7 +216,7 @@
       <li><a href="#part-3">Part 3: First repository</a></li>
       <li><a href="#part-4">Part 4: Branches and PRs</a></li>
       <li><a href="#part-5">Part 5: GitHub in VS Code</a></li>
-        <li><a href="#part-6">Part 6: Lab exercises</a></li>
+        <li><a href="#part-6">Part 6: Explore on your own</a></li>
       <li><a href="#video">Video tutorial</a></li>
       <li><a href="#reference">Quick reference</a></li>
     </ol>
@@ -233,7 +233,7 @@
         <li><a href="#part-3">Part 3: First repository</a></li>
         <li><a href="#part-4">Part 4: Branches and PRs</a></li>
         <li><a href="#part-5">Part 5: GitHub in VS Code</a></li>
-        <li><a href="#part-6">Part 6: Lab exercises</a></li>
+        <li><a href="#part-6">Part 6: Explore on your own</a></li>
         <li><a href="#video">Video tutorial</a></li>
         <li><a href="#reference">Quick reference</a></li>
       </ol>
@@ -579,55 +579,75 @@ git push</code></pre>
 
     <!-- Part 6 -->
     <section id="part-6">
-      <h2>Part 6: Lab exercises</h2>
-      <p class="first">Students complete three exercises, individually first and then in pairs, and submit their repository links for checking.</p>
+      <h2>Part 6: Explore on your own</h2>
+      <p class="first">These activities are for you to try at your own pace. Nothing here needs to be submitted. Pick the ones that interest you, use the command line or VS Code (or both), and do not worry about breaking things: that is how you learn Git.</p>
+      <div class="note"><strong>Tip:</strong> make a practice repo called <code>git-playground</code> for these activities, so your real work stays tidy. You can delete it any time under <strong>Settings → Danger Zone</strong> on GitHub.</div>
 
-      <h3>Exercise 1: Personal repo (individual)</h3>
+      <h3>Activity 1: Your playground repo</h3>
+      <p><strong>Try this:</strong></p>
       <ol>
-        <li>Create a private repo named <code>fpc-&lt;matric-number&gt;</code> with a README and a <code>.gitignore</code>.</li>
-        <li>Clone it, add a working program from a previous FPC lab, and push it.</li>
-        <li>Edit the README to include your name, matric number and a one-line description of the program.</li>
-        <li>Make <strong>at least three commits</strong> with meaningful messages.</li>
+        <li>Create a repo named <code>git-playground</code> on GitHub with a README, then clone it.</li>
+        <li>Add any small program you have written before and push it.</li>
+        <li>Make three more small changes, committing after each one with a clear message.</li>
+        <li>Look at your history with <code>git log --oneline</code>, then compare it with the <strong>Commits</strong> page on GitHub and the <strong>Graph</strong> in VS Code.</li>
+      </ol>
+      <div class="note"><strong>What you should see:</strong> the same commits, in the same order, in all three places.</div>
+
+      <h3>Activity 2: Undo and time travel</h3>
+      <p><strong>Try this:</strong></p>
+      <ol>
+        <li>Change a line in your program but do not commit. Run <code>git diff</code> to see exactly what changed.</li>
+        <li>Undo it with <code>git restore &lt;file&gt;</code> and check the file is back to normal.</li>
+        <li>On GitHub, open your repo's <strong>Commits</strong> page, click an older commit, and see how the file looked at that point.</li>
+      </ol>
+      <div class="note"><strong>Think about it:</strong> how could this save you the night before a deadline?</div>
+
+      <h3>Activity 3: Branch and pull request on your own</h3>
+      <p><strong>Try this:</strong></p>
+      <ol>
+        <li>Create a branch called <code>improve-input</code>.</li>
+        <li>Make an improvement, for example reject negative numbers or add a menu.</li>
+        <li>Switch back to <code>main</code> and notice your change is not there. Switch to the branch again and it returns.</li>
+        <li>Push the branch, open a pull request, read the changes GitHub shows, and merge it yourself.</li>
       </ol>
 
-      <h3>Exercise 2: Branch and pull request (individual)</h3>
+      <h3>Activity 4: Create a merge conflict on purpose</h3>
+      <p>You do not need a partner for this one.</p>
       <ol>
-        <li>Create a branch <code>improve-input</code>.</li>
-        <li>Add input validation to your program (for example, reject negative numbers).</li>
-        <li>Push the branch, open a pull request into <code>main</code>, and merge it yourself.</li>
-        <li>Pull <code>main</code> locally and confirm the change is there.</li>
+        <li>Create two branches from <code>main</code>: <code>version-a</code> and <code>version-b</code>.</li>
+        <li>On each branch, change <strong>the same line</strong> of <code>README.md</code> in different ways, and commit.</li>
+        <li>Merge <code>version-a</code> into <code>main</code>, then try to merge <code>version-b</code>.</li>
+        <li>Resolve the conflict using Part 4.4 (command line) or Part 5.6 (VS Code).</li>
+      </ol>
+      <div class="note"><strong>Extra:</strong> repeat it with a friend, each of you working from your own computer on a shared repo.</div>
+
+      <h3>Activity 5: Same task, two ways</h3>
+      <p>Do the basic cycle (edit, stage, commit, push) once with typed commands and once with VS Code buttons. Which do you prefer? Open the terminal inside VS Code and watch the buttons update when you type commands.</p>
+
+      <h3>Activity 6: Build your GitHub profile</h3>
+      <ol>
+        <li>Create a public repo with <strong>exactly the same name as your username</strong> (for example <code>aliahmad-dev/aliahmad-dev</code>).</li>
+        <li>Edit its README to introduce yourself: your course, the languages you are learning, and projects you are proud of.</li>
+        <li>Visit your profile page: the README now appears at the top.</li>
       </ol>
 
-      <h3>Exercise 3: Pair collaboration and conflict (pairs)</h3>
+      <h3>Activity 7: Explore open source</h3>
       <ol>
-        <li>Student A creates repo <code>fpc-pair-&lt;A&gt;-&lt;B&gt;</code> and adds Student B as a collaborator.</li>
-        <li>Both clone it. Each creates their own branch and edits <strong>the same line</strong> of <code>README.md</code>.</li>
-        <li>A opens a PR and merges it. B opens a PR, which now has a conflict.</li>
-        <li>B resolves the conflict (in VS Code or on GitHub) and merges.</li>
+        <li>Search GitHub for a project in a language you are learning, for example <em>beginner C projects</em>.</li>
+        <li>Read its README, browse the <strong>Commits</strong> page, and look at a few <strong>Issues</strong> and <strong>Pull requests</strong> to see how real teams work.</li>
+        <li>Click <strong>Star</strong> on projects you like, or <strong>Fork</strong> one to get your own copy to experiment with.</li>
       </ol>
 
-      <h3>Submission checklist</h3>
-      <p>Tick each item as you finish it. Your ticks are saved in this browser.</p>
+      <h3>Check your progress</h3>
+      <p>Optional: tick what you can now do. Your ticks are saved in this browser only.</p>
       <ul class="checklist">
-        <li><label><input type="checkbox" data-key="c1"> Repo link submitted via the course LMS</label></li>
-        <li><label><input type="checkbox" data-key="c2"> README has name, matric number and program description</label></li>
-        <li><label><input type="checkbox" data-key="c3"> At least 3 commits with meaningful messages</label></li>
-        <li><label><input type="checkbox" data-key="c4"> One merged pull request from <code>improve-input</code></label></li>
-        <li><label><input type="checkbox" data-key="c5"> No compiled files (<code>.exe</code>, <code>.o</code>, <code>a.out</code>) committed</label></li>
-        <li><label><input type="checkbox" data-key="c6"> Pair repo shows a resolved merge conflict in its history</label></li>
+        <li><label><input type="checkbox" data-key="e1"> I can create, clone, commit and push a repo</label></li>
+        <li><label><input type="checkbox" data-key="e2"> I can see what changed and undo a mistake</label></li>
+        <li><label><input type="checkbox" data-key="e3"> I can create a branch and merge it with a pull request</label></li>
+        <li><label><input type="checkbox" data-key="e4"> I can resolve a merge conflict</label></li>
+        <li><label><input type="checkbox" data-key="e5"> I can do the basic cycle in VS Code</label></li>
+        <li><label><input type="checkbox" data-key="e6"> I have set up my GitHub profile README</label></li>
       </ul>
-
-      <h3>Suggested marking rubric (10 marks)</h3>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Criterion</th><th>Marks</th></tr></thead>
-        <tbody>
-          <tr><td>Repo set up correctly (README, .gitignore, private)</td><td>2</td></tr>
-          <tr><td>Commit history: at least 3 commits, clear messages</td><td>3</td></tr>
-          <tr><td>Branch and pull request merged correctly</td><td>2</td></tr>
-          <tr><td>Merge conflict resolved, code still runs</td><td>2</td></tr>
-          <tr><td>No unnecessary files committed</td><td>1</td></tr>
-        </tbody>
-      </table></div>
     </section>
 
     <!-- Video -->
