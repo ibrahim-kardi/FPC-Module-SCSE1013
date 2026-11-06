@@ -1,7 +1,6 @@
-# FPC-Module-SCSE1013
 Fundamental Programming Concept
 
-# FPC Module: Getting Started with GitHub
+# Getting Started with GitHub
 
 ## What is GitHub?
 
@@ -19,7 +18,7 @@ GitHub is an online platform for storing, sharing and working together on code. 
 
 ## Module overview
 
-By the end of this module, every FPC student can store their code on GitHub, track changes with Git, and submit work through a repository. No prior Git experience is assumed.
+By the end of this module, every student can store their code on GitHub, track changes with Git, and submit work through a repository. No prior Git experience is assumed.
 
 **Learning outcomes.** After completing this module, students will be able to:
 
