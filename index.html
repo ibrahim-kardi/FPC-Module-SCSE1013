@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FPC Module: Getting Started with GitHub</title>
+<title>Getting Started with GitHub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -155,8 +155,10 @@
     padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 0 0 20px;
   }
 
-  .video { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 10px; overflow: hidden; background: #000; }
-  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  /* Hides YouTube's title bar: the iframe is taller than the box and shifted up,
+     so the title strip sits above the visible area. Increase --hide if any of it still shows. */
+  .video { --hide: 70px; position: relative; padding-bottom: calc(56.25% + var(--hide)); height: 0; border-radius: 10px; overflow: hidden; background: #000; }
+  .video iframe { position: absolute; left: 0; top: calc(-1 * var(--hide)); width: 100%; height: calc(100% + var(--hide)); border: 0; }
 
   ul.checklist { list-style: none; padding: 0; }
   ul.checklist label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
@@ -186,7 +188,6 @@
 <header class="hero">
   <div class="hero-inner">
     <div>
-      <p class="course">SCSE1013 Fundamental Programming Concept</p>
       <h1>Getting Started with GitHub</h1>
       <p class="lead">Store your code online, track every change with Git, and submit your work through a repository. No prior Git experience needed.</p>
     </div>
@@ -197,7 +198,8 @@
       <a href="#part-2"><span class="graph">*</span><span class="hash">8e02c5a</span><span class="msg">Part 2: Setup</span></a>
       <a href="#part-3"><span class="graph">*</span><span class="hash">c4d6f91</span><span class="msg">Part 3: Your first repository</span></a>
       <a href="#part-4"><span class="graph">*</span><span class="hash">5b91a7e</span><span class="msg">Part 4: Branches and pull requests</span></a>
-      <a href="#part-5"><span class="graph">*</span><span class="hash">e07d3b8</span><span class="msg">Part 5: Lab exercises</span></a>
+      <a href="#part-5"><span class="graph">*</span><span class="hash">e07d3b8</span><span class="msg">Part 5: Using GitHub in VS Code</span></a>
+      <a href="#part-6"><span class="graph">*</span><span class="hash">6ac2f15</span><span class="msg">Part 6: Lab exercises</span></a>
       <a href="#video"><span class="graph">*</span><span class="hash">92fa60c</span><span class="msg">Video tutorial</span></a>
       <a href="#reference"><span class="graph">*</span><span class="hash">d18e4f3</span><span class="msg">Quick reference</span></a>
     </div>
@@ -213,7 +215,8 @@
       <li><a href="#part-2">Part 2: Setup</a></li>
       <li><a href="#part-3">Part 3: First repository</a></li>
       <li><a href="#part-4">Part 4: Branches and PRs</a></li>
-      <li><a href="#part-5">Part 5: Lab exercises</a></li>
+      <li><a href="#part-5">Part 5: GitHub in VS Code</a></li>
+        <li><a href="#part-6">Part 6: Lab exercises</a></li>
       <li><a href="#video">Video tutorial</a></li>
       <li><a href="#reference">Quick reference</a></li>
     </ol>
@@ -229,7 +232,8 @@
         <li><a href="#part-2">Part 2: Setup</a></li>
         <li><a href="#part-3">Part 3: First repository</a></li>
         <li><a href="#part-4">Part 4: Branches and PRs</a></li>
-        <li><a href="#part-5">Part 5: Lab exercises</a></li>
+        <li><a href="#part-5">Part 5: GitHub in VS Code</a></li>
+        <li><a href="#part-6">Part 6: Lab exercises</a></li>
         <li><a href="#video">Video tutorial</a></li>
         <li><a href="#reference">Quick reference</a></li>
       </ol>
@@ -349,7 +353,7 @@ cat ~/.ssh/id_ed25519.pub</code></pre>
 
       <h3>Step 5 (optional): Friendlier tools</h3>
       <ul>
-        <li><strong>VS Code</strong> has Git built in: the Source Control panel lets you stage, commit and push with buttons. Students should still learn the commands first.</li>
+        <li><strong>VS Code</strong> has Git built in: the Source Control panel lets you stage, commit and push with buttons. Students should still learn the commands first. See Part 5 for a full walkthrough.</li>
         <li><strong>GitHub Desktop</strong> (<a href="https://desktop.github.com">desktop.github.com</a>) is a graphical app that suits students who struggle with the terminal.</li>
       </ul>
       <div class="note"><strong>Setup checkpoint:</strong> <code>git --version</code> works, <code>git config --list</code> shows your name and email, and you can sign in to GitHub from your computer.</div>
@@ -486,7 +490,94 @@ git push</code></pre>
 
     <!-- Part 5 -->
     <section id="part-5">
-      <h2>Part 5: Lab exercises</h2>
+      <h2>Part 5: Using GitHub in VS Code</h2>
+      <p class="first">VS Code lets you do everything from Parts 3 and 4 with buttons instead of typed commands: clone, stage, commit, push, pull, branch and resolve conflicts. It runs the same Git commands behind the scenes, so the two ways can be mixed freely.</p>
+
+      <h3>5.1 Set up</h3>
+      <ol>
+        <li>Finish Part 2 first. VS Code uses the Git you installed and the name and email you configured.</li>
+        <li>Download and install VS Code from <a href="https://code.visualstudio.com">code.visualstudio.com</a>.</li>
+        <li>Open VS Code and click the <strong>Accounts</strong> icon (the person icon, bottom left), then choose <strong>Sign in with GitHub</strong>. Your browser opens; click <strong>Authorize</strong> and return to VS Code.</li>
+        <li>Open the <strong>Extensions</strong> view (<code>Ctrl+Shift+X</code>, or <code>Cmd+Shift+X</code> on macOS), search for <strong>GitHub Pull Requests</strong> (published by GitHub) and click <strong>Install</strong>. This adds pull requests to VS Code.</li>
+        <li>Optional: install the extension for your course language, for example <strong>C/C++</strong> by Microsoft.</li>
+      </ol>
+      <div class="note"><strong>Check:</strong> open the <strong>Source Control</strong> view with <code>Ctrl+Shift+G</code> (<code>Cmd+Shift+G</code> on macOS). If it says Git is not installed or not found, install Git (Part 2, Step 2) and restart VS Code.</div>
+
+      <h3>5.2 Clone a repository</h3>
+      <ol>
+        <li>Press <code>Ctrl+Shift+P</code> (<code>Cmd+Shift+P</code> on macOS) to open the Command Palette.</li>
+        <li>Type <strong>Git: Clone</strong> and press Enter, then choose <strong>Clone from GitHub</strong>.</li>
+        <li>Pick your repository from the list (for example <code>fpc-lab1</code>), or paste its URL.</li>
+        <li>Choose a folder to save it in, then click <strong>Open</strong> when VS Code asks.</li>
+      </ol>
+      <p>Already have a project folder that is not on GitHub yet? Open it with <strong>File → Open Folder</strong>, go to Source Control and click <strong>Publish to GitHub</strong>. Choose <strong>private</strong> for graded work.</p>
+
+      <h3>5.3 The basic cycle with buttons</h3>
+      <p>Edit a file and save it. The Source Control icon shows a number: how many files have changed. Each file is marked with a letter:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Letter</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>U</strong></td><td>Untracked: a new file Git is not saving yet</td></tr>
+          <tr><td><strong>M</strong></td><td>Modified: a tracked file you have changed</td></tr>
+          <tr><td><strong>A</strong></td><td>Added: staged and ready to commit</td></tr>
+          <tr><td><strong>D</strong></td><td>Deleted</td></tr>
+        </tbody>
+      </table></div>
+      <ol>
+        <li><strong>Review:</strong> click a file under <strong>Changes</strong> to see old and new versions side by side.</li>
+        <li><strong>Stage:</strong> hover over the file and click <strong>+</strong> (same as <code>git add</code>). Click <strong>+</strong> on the <strong>Changes</strong> heading to stage everything.</li>
+        <li><strong>Commit:</strong> type a message in the box at the top and click <strong>Commit</strong> (same as <code>git commit -m</code>).</li>
+        <li><strong>Push and pull:</strong> click <strong>Sync Changes</strong>. It pulls new commits from GitHub, then pushes yours. For one direction only, use the <strong>…</strong> menu in Source Control and choose <strong>Pull</strong> or <strong>Push</strong>.</li>
+      </ol>
+      <div class="note"><strong>Tip:</strong> if you click Commit with nothing staged, VS Code asks whether to stage all changes and commit them. That is fine for small labs, but read the list first so you do not commit compiled files.</div>
+
+      <h3>5.4 Branches</h3>
+      <ol>
+        <li>Click the branch name in the bottom-left status bar (usually <code>main</code>).</li>
+        <li>Choose <strong>Create new branch</strong>, type a name such as <code>feature-menu</code>, and press Enter. VS Code switches to it.</li>
+        <li>Commit as usual, then click <strong>Publish Branch</strong> in Source Control to push it to GitHub.</li>
+        <li>To switch branches later, click the branch name again and pick from the list.</li>
+      </ol>
+
+      <h3>5.5 Pull requests</h3>
+      <ol>
+        <li>With the branch published, open the <strong>GitHub Pull Requests</strong> view from the left bar, or click the <strong>Create Pull Request</strong> icon at the top of Source Control.</li>
+        <li>Check that it merges into <code>main</code>, add a title and description, and click <strong>Create</strong>.</li>
+        <li>Teammates can review, comment and merge from VS Code or from github.com.</li>
+        <li>After merging, switch back to <code>main</code> and click <strong>Sync Changes</strong>.</li>
+      </ol>
+
+      <h3>5.6 Resolving a merge conflict</h3>
+      <p>Files with conflicts appear under <strong>Merge Changes</strong> in Source Control. Open the file and VS Code shows clickable options above each conflict:</p>
+      <ul>
+        <li><strong>Accept Current Change</strong> keeps your version.</li>
+        <li><strong>Accept Incoming Change</strong> keeps the other branch's version.</li>
+        <li><strong>Accept Both Changes</strong> keeps both, one after the other.</li>
+      </ul>
+      <p>Pick one for every conflict (or edit the code by hand), save the file, stage it with <strong>+</strong>, then commit and sync. For bigger conflicts, click <strong>Resolve in Merge Editor</strong> to see both versions and the result side by side.</p>
+
+      <h3>5.7 History and the built-in terminal</h3>
+      <ul>
+        <li>The <strong>Graph</strong> section at the bottom of Source Control shows the commit history and branches, like <code>git log</code>.</li>
+        <li>Open a terminal inside VS Code with <code>Ctrl+`</code> (the key above Tab). Every command from Parts 3 and 4 works there, and the buttons update to match.</li>
+      </ul>
+
+      <h3>VS Code shortcuts</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Action</th><th>Windows / Linux</th><th>macOS</th></tr></thead>
+        <tbody>
+          <tr><td>Command Palette</td><td><code>Ctrl+Shift+P</code></td><td><code>Cmd+Shift+P</code></td></tr>
+          <tr><td>Source Control view</td><td><code>Ctrl+Shift+G</code></td><td><code>Cmd+Shift+G</code></td></tr>
+          <tr><td>Extensions view</td><td><code>Ctrl+Shift+X</code></td><td><code>Cmd+Shift+X</code></td></tr>
+          <tr><td>Open terminal</td><td><code>Ctrl+`</code></td><td><code>Ctrl+`</code></td></tr>
+          <tr><td>Commit (in the message box)</td><td><code>Ctrl+Enter</code></td><td><code>Cmd+Enter</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- Part 6 -->
+    <section id="part-6">
+      <h2>Part 6: Lab exercises</h2>
       <p class="first">Students complete three exercises, individually first and then in pairs, and submit their repository links for checking.</p>
 
       <h3>Exercise 1: Personal repo (individual)</h3>
@@ -542,7 +633,7 @@ git push</code></pre>
       <h2>GitHub video tutorial</h2>
       <p class="first">Watch this walkthrough before or after the labs to see each step in action.</p>
       <div class="video">
-        <iframe src="https://www.youtube.com/embed/ATVkjDNhQzU"
+        <iframe src="https://www.youtube.com/embed/ATVkjDNhQzU?rel=0"
           title="GitHub video tutorial"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -600,14 +691,16 @@ git push</code></pre>
 
       <h3>References</h3>
       <ul>
-          <li><a href="https://github.com/ibrahim-kardi/FPC-Module-SCSE1013/blob/main/README.md">Read the full module notes</a></li>
+             <li><a href="https://ibrahim-kardi.github.io/Getting-Started-GitHub-Module/blob/main/README.md">Read the full module notes</a></li>
+      </ul>
+            <ul>
         <li><a href="https://docs.github.com/en/get-started">GitHub Docs: Get started</a></li>
       </ul>
     </section>
   </main>
 </div>
 
-<footer>SCSE1013 Fundamental Programming Concept. <a href="https://github.com/ibrahim-kardi/FPC-Module-SCSE1013">View this module on GitHub</a></footer>
+<footer><a href="https://ibrahim-kardi.github.io/Getting-Started-GitHub-Module/">View this module on GitHub</a></footer>
 
 <script>
   // Copy buttons on every code block
